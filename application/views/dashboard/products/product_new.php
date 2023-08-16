@@ -58,8 +58,9 @@
                                 <div class="row m-0">
                                     <div class="col-12">
                                         <div class="mb-3">
-                                            <input type="file" class="form-control" id="exampleInputPassword1">
+                                            <input type="file" class="form-control" id="filesUpload" multiple>
                                         </div>
+                                        <div id="filesPreview" class="row m-0"></div>
                                     </div>
                                 </div>
                             </div>
@@ -373,17 +374,22 @@
     <?php $this->load->view('components/_common_js') ?>
     <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
     <script>
-        Dropzone.options.fileDrop = { // camelized version of the `id`
-            paramName: "file", // The name that will be used to transfer the file
-            maxFilesize: 2, // MB
-            accept: function(file, done) {
-                if (file.name == "justinbieber.jpg") {
-                    done("Naha, you don't.");
-                } else {
-                    done();
-                }
-            }
-        };
+        $(document).ready(function() {
+            $('#filesUpload').on('change', function() {
+                this.files.forEach(file => {
+                    // var file = this.files[0];
+                    var reader = new FileReader();
+                    console.log("File Upload", reader.readAsDataURL(file));
+                    reader.onload = function() {
+                        var dataURL = reader.result;
+                        let appendDiv = "<div class='col-xl-3 col-md-4 col-6'><img id='theImg' src='" + dataURL + "' class='w-100'/></div>"
+                        $('#filesPreview').append(appendDiv);
+                    };
+                });
+
+                // reader.readAsDataURL(file);
+            });
+        });
     </script>
 </body>
 

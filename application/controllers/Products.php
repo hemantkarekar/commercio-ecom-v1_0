@@ -11,6 +11,7 @@ class Products extends CI_Controller
 		$this->load->model("DashboardControl");
 		$this->load->model("ProductsModel");
 		$this->load->library("converter/currencyconverter");
+		$this->load->library("captchalibrary");
 		$this->load->helper('dashboard_menu');
 	}
 	/**
@@ -52,9 +53,11 @@ class Products extends CI_Controller
 	}
 	public function new()
 	{
+		$captcha = $this->captchalibrary->create();
 		$data = [
 			'page' => [
-				'title' => "Add New Product"
+				'title' => "Add New Product",
+				'captcha' => $captcha
 			],
 			'menu' => json_decode($this->DashboardControl->menu_options(), 3)
 		];
